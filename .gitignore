@@ -1,0 +1,6 @@
+.venv/
+__pycache__/
+takes.json
+*.webm
+*.ogg
+*.wav

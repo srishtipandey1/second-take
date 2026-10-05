@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4f5f0">
+  <title>Second Take</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <main class="page-shell">
+    <header class="page-header">
+      <div>
+        <p class="eyebrow">SPEAKING PRACTICE</p>
+        <h1>Second Take</h1>
+      </div>
+      <p class="local-note">Your audio stays on this computer.</p>
+    </header>
+
+    <section class="recording-section" aria-labelledby="recording-title">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">NEW PRACTICE</p>
+          <h2 id="recording-title">Make a take</h2>
+        </div>
+        <span id="recording-status" class="status" role="status">Ready when you are</span>
+      </div>
+      <form id="recording-form">
+        <label for="take-label">Take name <span class="optional">(optional)</span></label>
+        <div class="record-controls">
+          <input id="take-label" name="label" maxlength="80" placeholder="e.g. Book report introduction">
+          <button id="record-button" class="record-button" type="button">
+            <span class="record-dot" aria-hidden="true"></span><span id="record-button-text">Record</span>
+          </button>
+          <button id="analyze-button" class="analyze-button" type="submit" disabled>Analyze take</button>
+        </div>
+      </form>
+      <p id="error-message" class="error-message" role="alert" hidden></p>
+      <div id="loading-message" class="loading-message" role="status" hidden>
+        <span class="loading-indicator" aria-hidden="true"></span>
+        <span>Listening closely. The first Whisper run may download its model.</span>
+      </div>
+    </section>
+
+    <section id="result-section" class="result-section" aria-live="polite" hidden>
+      <div class="section-heading result-heading">
+        <div>
+          <p class="eyebrow">TAKE REVIEW</p>
+          <h2 id="result-title">Your take</h2>
+        </div>
+      </div>
+      <audio id="audio-player" controls></audio>
+      <figure class="waveform-figure">
+        <canvas id="waveform" aria-label="Audio waveform with long pauses shaded"></canvas>
+        <figcaption>Shaded sections mark long pauses. Select a word to jump to that moment.</figcaption>
+      </figure>
+      <div class="metrics-grid" id="metrics-grid"></div>
+      <div class="review-columns">
+        <section class="transcript-panel" aria-labelledby="transcript-title">
+          <h3 id="transcript-title">Transcript</h3>
+          <p id="transcript" class="transcript"></p>
+          <div id="pause-list" class="pause-list"></div>
+        </section>
+        <section class="tips-panel" aria-labelledby="tips-title">
+          <h3 id="tips-title">Practice tips</h3>
+          <ul id="tips-list"></ul>
+          <p id="coaching-error" class="service-message" hidden></p>
+          <p id="numbers-warning" class="numbers-warning" hidden></p>
+        </section>
+      </div>
+    </section>
+
+    <section class="trend-section" aria-labelledby="trend-title">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">OVER TIME</p>
+          <h2 id="trend-title">Your takes</h2>
+        </div>
+        <span id="take-count" class="take-count">0 takes</span>
+      </div>
+      <div id="trend-empty" class="trend-empty">Your recorded takes will appear here.</div>
+      <div id="trend-content" hidden>
+        <canvas id="trend-chart" aria-label="Fillers per minute and long pauses across recorded takes"></canvas>
+        <div class="chart-legend"><span><i class="legend-fillers"></i>Fillers per minute</span><span><i class="legend-pauses"></i>Long pauses</span></div>
+        <ol id="take-list" class="take-list"></ol>
+      </div>
+    </section>
+    <footer>English practice · One speaker · Local processing</footer>
+  </main>
+  <script src="/static/app.js" defer></script>
+</body>
+</html>
