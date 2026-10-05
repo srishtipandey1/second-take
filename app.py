@@ -17,12 +17,14 @@ from starlette.concurrency import run_in_threadpool
 
 BASE_DIR = Path(__file__).resolve().parent
 STATIC_DIR = BASE_DIR / "static"
-TAKES_FILE = BASE_DIR / "takes.json"
+DATA_DIR = Path(os.environ.get("SECOND_TAKE_DATA_DIR", BASE_DIR)).resolve()
+DATA_DIR.mkdir(parents=True, exist_ok=True)
+TAKES_FILE = DATA_DIR / "takes.json"
 HESITATION_FILLERS = {"um", "uh", "umm", "er", "hmm"}
 FILLER_WORDS = {"like", "basically", "actually"}
 FILLER_PHRASES = (("you", "know"), ("i", "mean"))
 INITIAL_PROMPT = "Umm, so, like, I think, uh, basically..."
-OLLAMA_URL = "http://localhost:11434/api/generate"
+OLLAMA_URL = os.environ.get("SECOND_TAKE_OLLAMA_URL", "http://localhost:11434/api/generate")
 
 app = FastAPI(title="Second Take")
 app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
