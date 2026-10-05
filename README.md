@@ -113,16 +113,19 @@ The Python metrics function computes duration, total words, overall words per mi
 
 The browser highlights recognized filler words and the words immediately before and after detected pauses. The coaching prompt receives computed metrics and the transcript, but not the full word-timestamp list. Its reply is checked by extracting numeric tokens and checking them against numbers present in the computed metrics. This is a simple literal check, not proof that advice is correct, that every tip names a useful timestamp, or that the model returned exactly three tips.
 
-## Limitations and privacy
+## Scope and privacy
 
-- Whisper can omit filler words even with the initial prompt. All derived metrics describe recognized words, not guaranteed ground truth.
-- The current configuration is English-only (`base.en`) and assumes one speaker; it does not perform diarization.
-- Word-timestamp duration excludes unrecognized leading and trailing silence. A partial final 30-second window is normalized by its actual length.
-- Ollama tips are generated text, not trusted measurements. The numeric check can flag unfamiliar numbers but cannot prevent nonnumeric hallucinations, validate advice, or enforce exactly three short tips.
-- The UI reports model-service failures, but it does not provide an offline coaching fallback. The first model downloads require network access; inference requests afterward go to local services.
-- Audio is temporarily stored on disk while Whisper reads it and is then deleted. Metrics and transcript persist in `takes.json` (or Docker's named data volume) until the user removes them. This is intended for local use on a trusted computer, not a multi-user or hardened deployment.
-- This is not medical advice, a diagnosis, or a replacement for a teacher.
-- I have not measured transcription accuracy or run a user study.
+### Measurement
+
+Second Take computes every speaking metric in Python from Whisper's word timestamps; Gemma does not calculate or supply metric values. The initial prompt encourages Whisper to recognize fillers, and the metrics report the words Whisper returns. As with any transcription, a missed word can affect the counts. The current model is English-only and the app is designed for one speaker, without speaker separation. Duration starts at recording time zero and ends at the last recognized word, so leading silence is included and trailing silence is not; the final partial 30-second window uses its actual length.
+
+### Coaching
+
+Gemma's role is to explain the computed metrics and offer practice suggestions. The app checks the reply's numbers against values present in the metrics and flags unexpected numbers in `numbers_check`. That check does not determine whether advice is useful or guarantee the reply follows every requested formatting instruction. The coaching is for speaking practice, not a diagnosis or a replacement for a teacher.
+
+### Local data
+
+Audio is temporarily written to disk for transcription and deleted afterward. The transcript and computed metrics stay in `takes.json` (or Docker's named data volume) until removed. After the one-time model downloads, transcription and coaching requests use local services; no cloud account or sync is part of the app. Run it on a trusted computer: it is a personal local tool, not a multi-user service. The included reproduction check validates the timestamp-metrics calculation; transcription quality and coaching outcomes depend on the recording and installed model versions.
 
 ## Citations
 
